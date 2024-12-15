@@ -14,7 +14,7 @@ public class InitDb {
 
     private final InitService initService;
 
-    @PostConstruct //desc  호출하지 않아도 Spring 구동시 의존성주입으로 인해 1번 호출됨
+    @PostConstruct //desc 호출하지 않아도 Spring 구동시 의존성주입으로 인해 1번 호출됨
     public void init() {
         initService.dbInit1();
     }

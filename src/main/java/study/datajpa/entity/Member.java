@@ -5,7 +5,7 @@ import lombok.*;
 
 @Entity
 @Getter @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor //(access = AccessLevel.PROTECTED)
 @ToString(of = {"id", "username", "age"})
 public class Member {
 
@@ -20,6 +20,7 @@ public class Member {
     @ManyToOne(fetch = FetchType.LAZY) //default FetchType.EAGER(즉시로딩). LAZY(지연로딩) 권장 (성능관점) 사용할때 sql 날려서 가져옴
     @JoinColumn(name = "team_id")
     private Team team;
+
 
     public Member(String username) {
         this.username = username;
