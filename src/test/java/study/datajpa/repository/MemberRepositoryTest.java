@@ -18,7 +18,6 @@ class MemberRepositoryTest {
     @Autowired
     MemberRepository memberRepository;
 
-
     @Test
     public void basicCRUD() {
         Member member1 = new Member("member1");
@@ -46,6 +45,4 @@ class MemberRepositoryTest {
         long deletedCount = memberRepository.count();
         Assertions.assertEquals(deletedCount, 0);
     }
-
-
 }
