@@ -4,10 +4,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import study.datajpa.entity.Member;
 
+import javax.print.attribute.standard.PageRanges;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,12 +26,37 @@ class MemberRepositoryTest {
     MemberRepository memberRepository;
     @Autowired
     TeamRepository teamRepository;
-/*
-   "member1A", 21 - teamA
-   "member2A", 22 -
-   "member3B", 22 - teamB
-   "member4B", 23 -
-*/
+
+/* ---username----age---team--------------
+   | "member1A"|  21 |  teamA
+   | "member2A"|  22 |
+   | "member3B"|  22 |  teamB
+   | "member4B"|  23 |
+----------------------------------------- */
+
+    @Test
+    public void paging() {
+        PageRequest pageRequest = PageRequest.of(0,5, Sort.by(Sort.Direction.DESC, "username"));
+
+        //총건수
+        Page<Member> page1 = memberRepository.findP1ByUsernameStartingWith("member", pageRequest);
+//        List<Member> page1Members = page1.getContent();
+        log.debug("전체카운트 : {}", page1.getTotalElements() );
+
+
+        //이전다음 paging (total count 구하지 않음)
+        Slice<Member> page2 = memberRepository.findP2ByUsernameStartingWith("member", pageRequest);
+//        List<Member> page2Members = page2.getContent();
+        log.debug("다음 페이지 여부 : {}", page2.hasNext());
+
+        //총건수(총건수 SQL 분리)
+        Page<Member> page3 = memberRepository.findP3ByUsernameStartingWith("member", pageRequest);
+//        List<Member> page3Members = page3.getContent();
+        log.debug("전체카운트 : {}", page3.getTotalElements() );
+
+        log.debug("end");
+
+    }
 
     @Test
     public void returnType() {
@@ -34,20 +64,7 @@ class MemberRepositoryTest {
         //조건에 해당하는 값이 없을경우
 
         Member member1 = memberRepository.findOneByUsername("BLANK"); //CASE1 (Return type : Member)
-        if(member1 == null)
-            log.debug("NULL");
-            log.debug("NULL");
-            log.debug("NULL");
-            log.debug("NULL");
-            log.debug("NULL");
-            log.debug("NULL");
-            log.debug("NULL");
-            log.debug("NULL");
-            log.debug("NULL");
-            log.debug("NULL");
-            log.debug("NULL");
-            log.debug("NULL");
-            log.debug("NULL");
+        if(member1 == null) log.debug("NULL");
 
         Optional<Member> oMember = memberRepository.findOptionalOneByUsername("BLANK"); //CASE1 (Return type : Member)
         Member member2 = oMember.orElseGet(Member::new);//값이 없다면 빈 객체 생성
@@ -61,9 +78,6 @@ class MemberRepositoryTest {
         if(members1 != null) {
             log.debug("members1.size() : {}", members1.size());
         }
-
-
-
     }
 
 

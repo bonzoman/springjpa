@@ -28,19 +28,32 @@ public class InitDb {
 
         public void dbInit1() {
             System.out.println("Init1" + this.getClass());
-            Team teamA = new Team("teamA");
-            Team teamB = new Team("teamB");
-            em.persist(teamA);
-            em.persist(teamB);
+            Team teamA = new Team("teamA"); em.persist(teamA);
+            Team teamB = new Team("teamB"); em.persist(teamB);
+            Team teamC = new Team("teamC"); em.persist(teamC);
 
-            Member member1 = new Member("member1A", 21, teamA);
-            Member member2 = new Member("member2A", 22, teamA);
-            Member member3 = new Member("member3B", 22, teamB);
-            Member member4 = new Member("member4B", 23, teamB);
-            em.persist(member1);
-            em.persist(member2);
-            em.persist(member3);
-            em.persist(member4);
+            em.persist(new Member("reader1A", 41, teamA));
+            em.persist(new Member("reader2B", 42, teamB));
+            em.persist(new Member("reader3C", 43, teamC));
+
+            em.persist(new Member("member1A", 21, teamA));
+            em.persist(new Member("member2A", 22, teamA));
+            em.persist(new Member("member3A", 22, teamA));
+            em.persist(new Member("member4A", 23, teamA));
+
+            em.persist(new Member("member1B", 21, teamB));
+            em.persist(new Member("member2B", 22, teamB));
+            em.persist(new Member("member3B", 22, teamB));
+            em.persist(new Member("member4B", 23, teamB));
+
+            em.persist(new Member("member1C", 31, teamC));
+            em.persist(new Member("member2C", 32, teamC));
+            em.persist(new Member("member3C", 32, teamC));
+            em.persist(new Member("member4C", 33, teamC));
+
+
+
+
         }
 
         public void dbInit2() {
